@@ -30,23 +30,11 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
 
     @Override
-    public User getUserById(Long id) {
-       Optional<UserEntity> userEntity = userRepository.findById(id);
-       if(userEntity!=null){
-           return modelMapper.map(userEntity, User.class);
-       }else{
-           throw new EntityNotFoundException(String.format("The user id %s not found", id));
-       }
-
-
-    }
-
-    @Override
     public User createUser(String userName, String email) {
         Optional<UserEntity> userEntityOptional = userRepository.getByEmail(email);
-        if(userEntityOptional.isPresent()){
+        if (userEntityOptional.isPresent()) {
             return null;
-        } else{
+        } else {
             UserEntity userEntity = new UserEntity();
             userEntity.setUserName(userName);
             userEntity.setEmail(email);
@@ -58,28 +46,66 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Match createUserMatch(Long userId, MatchDifficult difficulty) {
-       Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
-       if(userEntityOptional.isEmpty()){
-           throw  new EntityNotFoundException();
-       } else{
-           User user = modelMapper.map(userEntityOptional.get(), User.class);
-           return matchService.createMatch(user, difficulty);
-       }
+        Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
+        if (userEntityOptional.isEmpty()) {
+            throw new EntityNotFoundException();
+        } else {
+            User user = modelMapper.map(userEntityOptional.get(), User.class);
+            return matchService.createMatch(user, difficulty);
+        }
 
     }
 
     @Override
     public RoundMatch playUserMatch(Long userId, Long matchId, Integer numberToPlay) {
-       Match match = matchService.getMatchById(matchId);
-       //caso que se correspondan voy a jugar el juego de lo contrario no juego y sale error
-       if(!match.getUser().getId().equals(userId)){
-           return  null;
+        Match match = matchService.getMatchById(matchId);
+        //caso que se correspondan voy a jugar el juego de lo contrario no juego y sale error
+        if (!match.getUser().getId().equals(userId)) {
+            return null;
 
-       } else{
-           return matchService.playMatch(match, numberToPlay);
-       }
+        } else {
+            return matchService.playMatch(match, numberToPlay);
+        }
 
     }
 
+    @Override
+    public User getUserById(Long id) {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        if (userEntity != null) {
+            return modelMapper.map(userEntity, User.class);
+        } else {
+            throw new EntityNotFoundException(String.format("The user id %s not found", id));
+        }
+
+
+    }
+
+    @Override
+    public User updateUser(Long id, User user) {
+        Optional<UserEntity> userEntity = userRepository.findById(id);
+        if (userEntity.isPresent()) {
+            UserEntity userEntity1 = userEntity.get();
+            userEntity1.setUserName(user.getUserName());
+            userEntity1.setEmail(user.getEmail());
+
+            userRepository.save(userEntity1);
+            return modelMapper.map(userEntity1, User.class);
+        } else {
+            throw new EntityNotFoundException(String.format("The user id %s not found", id));
+
+        }
+    }
+
+    @Override
+    public Boolean deleteUser(Long id) {
+        return null;
+    }
+
+
+
 
 }
+
+
+
