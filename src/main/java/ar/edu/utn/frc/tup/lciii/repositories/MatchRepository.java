@@ -11,5 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface MatchRepository extends JpaRepository<MatchEntity, Long> {
-    //Optional<MatchEntity> getByIdDifficult(Long id, MatchDifficult difficulty);
+
 }

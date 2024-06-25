@@ -28,6 +28,19 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Override
+    public User getUserById(Long id) {
+       Optional<UserEntity> userEntity = userRepository.findById(id);
+       if(userEntity!=null){
+           return modelMapper.map(userEntity, User.class);
+       }else{
+           throw new EntityNotFoundException(String.format("The user id %s not found", id));
+       }
+
+
+    }
+
     @Override
     public User createUser(String userName, String email) {
         Optional<UserEntity> userEntityOptional = userRepository.getByEmail(email);
@@ -67,4 +80,6 @@ public class UserServiceImpl implements UserService {
        }
 
     }
+
+
 }

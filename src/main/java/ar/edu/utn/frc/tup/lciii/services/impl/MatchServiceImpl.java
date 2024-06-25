@@ -67,7 +67,6 @@ public class MatchServiceImpl implements MatchService {
             roundMatch.setRespuesta("GANO");
 
             //TODO: Calcular scores
-            //TODO: dar respuesta
         }else{
             match.setRemaningTries(match.getRemaningTries()-1);
             if(match.getRemaningTries().equals(0)){

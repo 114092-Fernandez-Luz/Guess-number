@@ -16,4 +16,6 @@ public interface UserService {
 
    RoundMatch playUserMatch(Long userId, Long matchId, Integer numberToPlay);
 
+   User getUserById(Long id);
+
 }
