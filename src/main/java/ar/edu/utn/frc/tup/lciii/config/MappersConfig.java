@@ -13,8 +13,7 @@ public class MappersConfig {
     @Bean
     public ModelMapper modelMapper(){return  new ModelMapper(); }
 
-    @Bean
-    @Qualifier("mergerMapper")
+    @Bean("mergerMapper")
     public ModelMapper mergerMapper(){
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration()
